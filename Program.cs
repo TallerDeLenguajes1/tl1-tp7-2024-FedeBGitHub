@@ -1,4 +1,16 @@
-﻿using EspacioCalculadora;
+﻿
+using DefEmpleados;
+Empleado primero = new Empleado();
+
+
+
+
+
+
+
+
+/*
+using EspacioCalculadora;
 
 int opcion;
 double num;
@@ -44,9 +56,7 @@ do
     }
     Console.WriteLine("El numero resultante es: " + operacion.Resultado);
 } while (opcion!=0);
-
-
-
+*/
 
 
     
