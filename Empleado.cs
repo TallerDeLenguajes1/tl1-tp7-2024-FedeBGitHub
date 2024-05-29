@@ -8,22 +8,34 @@ namespace DefEmpleados
         private char estadoCivil;
         private DateTime fecIngreso;
         private double sueldoBasico;
-
+       public string Nombre{ get => nombre; set => nombre = value;}
+       public string Apellido { get => apellido; set => apellido = value; }
+       public DateTime FecNac { get => fecNac; set => fecNac = value; }
+       public char EstadoCivil { get => estadoCivil; set => estadoCivil = value; }
+       public DateTime FecIngreso { get => fecIngreso; set => fecIngreso = value; }
+       public double SueldoBasico { get => sueldoBasico; set => sueldoBasico = value; }
+       
+       private Cargos cargo; 
+       public Cargos Cargo { 
+            get => cargo;
+            set => cargo = value; 
+        }
+        
         public enum Cargos
         {
-            Auxiliar = 1,
-            Administrativo = 2,
-            Ingeniero = 3,
-            Especializata = 4,
-            Investigador = 5
+            Auxiliar,
+            Administrativo,
+            Ingeniero,
+            Especialista,
+            Investigador
         }
 
-        public void Antiguedad ()
+        public int antiguedad ()
         {
             DateTime FechaActual = DateTime.Now;
-            int anios = FechaActual.Year - fecIngreso.Year;
-            int meses = FechaActual.Month - fecIngreso.Month;
-            int dias = FechaActual.Day - fecIngreso.Day;
+            int anios = FechaActual.Year - FecIngreso.Year;
+            int meses = FechaActual.Month - FecIngreso.Month;
+            int dias = FechaActual.Day - FecIngreso.Day;
             if (dias<0)
             {
                 meses--;
@@ -33,9 +45,9 @@ namespace DefEmpleados
                 anios--;
                 meses += 12;
             }
-            Console.WriteLine($"El empleado tiene una antiguedad de {anios} años y {meses} meses");
+            return anios;
         }
-        public void Edad ()
+        public int edad ()
         {
             DateTime FechaActual = DateTime.Now;
             int anios = FechaActual.Year - fecNac.Year;
@@ -50,7 +62,7 @@ namespace DefEmpleados
                 anios--;
                 meses += 12;
             }
-            Console.WriteLine($"Edad {anios} años");
+            return anios;
         }
         /*
         public void Jubilacion (int edad)
@@ -63,28 +75,46 @@ namespace DefEmpleados
             }
         }
         */
-         public void Jubilacion ()
+         public int jubilacion ()
         {
-            DateTime FechaActual = DateTime.Now;
-            int anios = FechaActual.Year - fecNac.Year;
-            int meses = FechaActual.Month - fecNac.Month;
-            int dias = FechaActual.Day - fecNac.Day;
-            if (dias<0)
+            int edadd = edad();
+             if (edadd>=65)
             {
-                meses--;
-            }
-            if (meses<0)
-            {
-                anios--;
-                meses += 12;
-            }
-             if (anios>=65)
-            {
-                Console.WriteLine($"Edad {anios} años , ya puede jubilarse");
+                edadd = 0;
             }else{
-                Console.WriteLine($"Edad {anios} años , Le faltan {65-anios} años para jubilarse");
+                edadd = 65 - edadd;
             }
-            
+            return edadd;
+        }
+
+        public double calcularSalario()
+        {
+            double salario;
+            double adicional;
+            int anti = antiguedad();
+
+            if (anti<=20)
+            {
+                adicional =(double) anti / 100;
+                adicional = adicional * sueldoBasico;   
+                
+            }else{
+                adicional = 0.25 * sueldoBasico;
+            }
+            if (cargo == Cargos.Ingeniero || cargo == Cargos.Especialista)
+            {
+                adicional = adicional * 1.50;
+                
+            }
+            if (estadoCivil == 'C')
+            {
+                adicional = adicional + 150000;
+                salario = sueldoBasico + adicional ;
+                
+            }else{
+                salario = sueldoBasico + adicional;
+            }
+             return salario;
         }
     }
 }
